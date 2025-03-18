@@ -6,6 +6,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
+import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -29,12 +30,29 @@ object NotificationUtils {
         }
     }
 
+    val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+
+
     fun showNotification(context: Context,title:String,message:String){
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
             .setSmallIcon(R.drawable.heart)
             .setContentTitle(title)
             .setContentText(message)
+            .setSound(soundUri)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "My Notification Channel",
+                NotificationManager.IMPORTANCE_HIGH
+            ).apply {
+                setSound(soundUri, null) // Assign sound to channel
+            }
+
+            val notificationManager = context.getSystemService(NotificationManager::class.java)
+            notificationManager.createNotificationChannel(channel)
+        }
 
         with(NotificationManagerCompat.from(context)){
             if (ActivityCompat.checkSelfPermission(

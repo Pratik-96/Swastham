@@ -226,16 +226,20 @@ fun MainLayout(modifier: Modifier, state: MainViewModel.dataState) {
     val spo2 = list?.get(list.size.minus(1))?.spo2.toString()
     val body = list?.get(list.size.minus(1))?.bodyTemp.toString()
 
-    if(Integer.parseInt(heartRate)>= 150){
-        NotificationUtils.showNotification(context,"Alert","Heart Rate above 150!!")
+
+
+
+    if(body.toDouble()>=100.0){
+        NotificationUtils.showNotification(context,"Alert","Body Temperature above 100!!")
     }
+
     if(Integer.parseInt(spo2)<= 95){
         NotificationUtils.showNotification(context,"Alert","Oxygen level below 95!!")
     }
 
 
-    if(body.toDouble()>=100.0){
-        NotificationUtils.showNotification(context,"Alert","Body Temperature above 100!!")
+    if(Integer.parseInt(heartRate)>= 150){
+        NotificationUtils.showNotification(context,"Alert","Heart Rate above 150!!")
     }
 
 
